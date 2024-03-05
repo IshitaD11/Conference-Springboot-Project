@@ -1,0 +1,3 @@
+#default port is 8080, below is used to change port
+server:
+  port: 4000
