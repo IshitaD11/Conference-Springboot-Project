@@ -5,9 +5,11 @@ import com.project.conferencespringdemo.repositories.SessionRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/sessions")
@@ -39,12 +41,12 @@ public class SessionsController {
     }
 
     // deletes session data from db
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable Long id){
-        sessionRepository.deleteById(id);
-    }
+//    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+//    public void delete(@PathVariable Long id){
+//        sessionRepository.deleteById(id);
+//    }
 
-    /* modified the delete method to handle deleting children data
+    //modified the delete method to handle deleting children data
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable Long id){
         // to delete children data, we need to delete all data for sessions from session_speakers table
@@ -57,24 +59,24 @@ public class SessionsController {
             // delete sessions data from db
             sessionRepository.deleteById(id);
         }
-    } */
+    }
 
     // update session columns into DB
     // PUT expects all the attributes to be passed in, if any attribute is missed, it will update as NULL. Add validation that all attributes are passed in, otherwise return a 400 bad payload error.
     // PATCH would only update the changed attributes as needed
-    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public Session update(@PathVariable Long id, @RequestBody Session session){
-        // get the existing data from DB based on "id" parameter
-        Session existingSession = sessionRepository.findById(id).orElse(null);
-        // BeanUtils takes existingSession and copies the incoming parameter "session" data onto it
-        // ignoreProperties: allows to ignore properties on the entity that we do not want to copy from one to another. Here we want to ignore the "Session_id" as it is PK, dont want to replace it, it might replace it to null, and PK can not have null values.
-        assert existingSession != null;
-        BeanUtils.copyProperties(session,existingSession,"session_id");
-        // save changes and flush to DB
-        return sessionRepository.saveAndFlush(existingSession);
-    }
+//    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+//    public Session update(@PathVariable Long id, @RequestBody Session session){
+//        // get the existing data from DB based on "id" parameter
+//        Session existingSession = sessionRepository.findById(id).orElse(null);
+//        // BeanUtils takes existingSession and copies the incoming parameter "session" data onto it
+//        // ignoreProperties: allows to ignore properties on the entity that we do not want to copy from one to another. Here we want to ignore the "Session_id" as it is PK, dont want to replace it, it might replace it to null, and PK can not have null values.
+//        assert existingSession != null;
+//        BeanUtils.copyProperties(session,existingSession,"session_id");
+//        // save changes and flush to DB
+//        return sessionRepository.saveAndFlush(existingSession);
+//    }
 
-    /* modified update method to add validation that all attributes are passed in, otherwise return a 400 bad payload error.
+    // modified update method to add validation that all attributes are passed in, otherwise return a 400 bad payload error.
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public ResponseEntity<Session> update(@PathVariable Long id, @RequestBody Session session){
@@ -84,7 +86,7 @@ public class SessionsController {
         }
 
         // get the existing data from DB based on "id" parameter
-        Session existingSession = sessionRepository.getOne(id);
+        Session existingSession = sessionRepository.getReferenceById(id);
 
         // BeanUtils takes existingSession and copies the incoming parameter "session" data onto it
         // ignoreProperties: allows to ignore properties on the entity that we do not want to copy from one to another. Here we want to ignore the "Session_id" as it is PK, dont want to replace it, it might replace it to null, and PK can not have null values.
@@ -93,5 +95,4 @@ public class SessionsController {
         // save changes and flush to DB and return ok response
         return ResponseEntity.ok(sessionRepository.saveAndFlush(existingSession));
     }
-    */
 }
