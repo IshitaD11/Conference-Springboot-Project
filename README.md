@@ -115,13 +115,13 @@ Both the classes have list() and get() method:
 
 Annotations and their meaning:  
 
-- **@RestController** -- responds to payloads incoming and outgoing as JSON REST endpoints.\
-- **@RequestMapping("/api/v1/sessions")** -- tells the router what the mapping URL looks like. All requests to URL will be sent to this controller.\
-- **@Autowired** -- Autowire/inject the SessionRepository when sessionController is build. It will create an instance of SessionRepository and put it into our class\
-- **@GetMapping** -- tells which HTTP verb to use, which will be a "GET" verb to call this endpoint\
-- **@RequestMapping("{id}")** -- addition to class RequestMapping. Adding id to the URL "/api/v1/sessions". The id specifies a specific session, and we want to return that.\
-- **@PathVariable Long id** -- pulling id of the URL and injecting into Get method\
-- **@ResponseStatus(HttpStatus.CREATED)** -- By default, the REST controllers return 200s as the response status for all calls. To override this need to @ResponseStatus. @ResponseStatus helps to specify the exact response that we want to occur when the method executes/finishes. HttpStatus.CREATED --> is mapped to 201\
+- **@RestController** -- responds to payloads incoming and outgoing as JSON REST endpoints.
+- **@RequestMapping("/api/v1/sessions")** -- tells the router what the mapping URL looks like. All requests to URL will be sent to this controller.
+- **@Autowired** -- Autowire/inject the SessionRepository when sessionController is build. It will create an instance of SessionRepository and put it into our class
+- **@GetMapping** -- tells which HTTP verb to use, which will be a "GET" verb to call this endpoint
+- **@RequestMapping("{id}")** -- addition to class RequestMapping. Adding id to the URL "/api/v1/sessions". The id specifies a specific session, and we want to return that.
+- **@PathVariable Long id** -- pulling id of the URL and injecting into Get method
+- **@ResponseStatus(HttpStatus.CREATED)** -- By default, the REST controllers return 200s as the response status for all calls. To override this need to @ResponseStatus. @ResponseStatus helps to specify the exact response that we want to occur when the method executes/finishes. HttpStatus.CREATED --> is mapped to 201
 - **@PostMapping** -- requiring the HTTP verb "POST" to be presented with this API call. 
 - **@RequestBody** -- Spring MVC taking in all the attributes in the JSON payload and automatically marshaling them into a session object.
 - **@RequestMapping**(value = "{id}", method = RequestMethod.DELETE) -- specifies required to pass specific id. the RequestMethod Delete required the HTTP verb "DELETE" presented with this API endpoint.
