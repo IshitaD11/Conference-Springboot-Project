@@ -5,6 +5,7 @@ import com.project.conferencespringdemo.repositories.SpeakerRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,10 +43,29 @@ public class SpeakerController {
     }
 
     // update speaker data
+//    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+//    public Speaker update(@PathVariable Long id, @RequestBody Speaker speaker){
+//        Speaker existingSpeaker = speakerRepository.getReferenceById(id);
+//        BeanUtils.copyProperties(speaker,existingSpeaker,"speaker_id");
+//        return speakerRepository.saveAndFlush(existingSpeaker);
+//    }
+
+    // modified update method to add validation that all attributes are passed in, otherwise return a 400 bad payload error.
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public Speaker update(@PathVariable Long id, @RequestBody Speaker speaker){
+    public ResponseEntity<Speaker> update(@PathVariable Long id, @RequestBody Speaker speaker){
+        // Check if any attribute is null
+        if (speaker.getSpeaker_id()==null || speaker.getFirst_name()==null || speaker.getLast_name()==null || speaker.getTitle() == null || speaker.getCompany() == null || speaker.getSpeaker_bio()==null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+        // get the existing data from DB based on "id" parameter
         Speaker existingSpeaker = speakerRepository.getReferenceById(id);
-        BeanUtils.copyProperties(speaker,existingSpeaker,"speaker_id");
-        return speakerRepository.saveAndFlush(existingSpeaker);
+
+        // BeanUtils takes existingSession and copies the incoming parameter "session" data onto it
+        // ignoreProperties: allows to ignore properties on the entity that we do not want to copy from one to another. Here we want to ignore the "Session_id" as it is PK, dont want to replace it, it might replace it to null, and PK can not have null values.
+        BeanUtils.copyProperties(speaker, existingSpeaker, "Speaker_id");
+
+        // save changes and flush to DB and return ok response
+        return ResponseEntity.ok(speakerRepository.saveAndFlush(existingSpeaker));
     }
 }

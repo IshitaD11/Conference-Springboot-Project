@@ -41,7 +41,7 @@ ii. Models: JPA entities and other persistent info to talk to DB entities.\
 iii. Repositories: JPA repositories.\
 iv. Services: service or logic-based code that is needed for the application.
 
-##### models:
+#### models:
 1. class Session --> for sessions table
 2. class Speaker --> for speakers table
 Mention their primary key and getters and setters.\
@@ -77,14 +77,14 @@ Add below to properties file, so that JDBC can create a Lob correctly on the jav
     `spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect`
 
 
-##### repositories:
+#### repositories:
 It is the data access layer. We will use Spring Data JPA repositories interfaces. For this we needed 'spring-boot-starter-data-jpa' dependency in the pom.xml file\
 JpaRepository provides all CRUD operations. By creating repositories, select, update, insert, and delete all are already set up and usable for Session and Speaker JPA class. 
 
 1. interface SessionRepository extends JpaRepository<Session,Long> -- Session datatype and Long is the PK datatype
 2. interface SpeakerRepository extends JpaRepository<Speaker,Long> -- Speaker datatype and Long is the PK datatype
 
-##### Controllers:
+#### Controllers:
 Controllers are used to handle API endpoints which are REST based.
 
 1. SessionsController
@@ -99,17 +99,17 @@ Both the classes have list() and get() method:
 
 Annotations and their meaning:  
 
-@RestController -- responds to payloads incoming and outgoing as JSON REST endpoints.\
-@RequestMapping("/api/v1/sessions") -- tells the router what the mapping URL looks like. All requests to URL will be sent to this controller.\
-@Autowired -- Autowire/inject the SessionRepository when sessionController is build. It will create an instance of SessionRepository and put it into our class\
-@GetMapping -- tells which HTTP verb to use, which will be a "GET" verb to call this endpoint\
-@RequestMapping("{id}") -- addition to class RequestMapping. Adding id to the URL "/api/v1/sessions". The id specifies a specific session, and we want to return that.\
-@PathVariable Long id -- pulling id of the URL and injecting into Get method\
-@ResponseStatus(HttpStatus.CREATED) -- By default, the REST controllers return 200s as the response status for all calls. To override this need to @ResponseStatus. @ResponseStatus helps to specify the exact response that we want to occur when the method executes/finishes. HttpStatus.CREATED --> is mapped to 201\
-@PostMapping -- requiring the HTTP verb "POST" to be presented with this API call. 
-@RequestBody -- Spring MVC taking in all the attributes in the JSON payload and automatically marshaling them into a session object.
-@RequestMapping(value = "{id}", method = RequestMethod.DELETE) -- specifies required to pass specific id. the RequestMethod Delete required the HTTP verb "DELETE" presented with this API endpoint.
-@RequestMapping(value = "{id}", method = RequestMethod.PUT) -- getting the "id" from URL and using HTTP verb "PUT". There are options PUT/PATCH. PUT will replace all the attributes on the record that you are updating. PATCH will allow just a portion of the attribute to be updated.
+**@RestController** -- responds to payloads incoming and outgoing as JSON REST endpoints.\
+**@RequestMapping("/api/v1/sessions")** -- tells the router what the mapping URL looks like. All requests to URL will be sent to this controller.\
+**@Autowired** -- Autowire/inject the SessionRepository when sessionController is build. It will create an instance of SessionRepository and put it into our class\
+**@GetMapping** -- tells which HTTP verb to use, which will be a "GET" verb to call this endpoint\
+**@RequestMapping("{id}")** -- addition to class RequestMapping. Adding id to the URL "/api/v1/sessions". The id specifies a specific session, and we want to return that.\
+**@PathVariable Long id** -- pulling id of the URL and injecting into Get method\
+**@ResponseStatus(HttpStatus.CREATED)** -- By default, the REST controllers return 200s as the response status for all calls. To override this need to @ResponseStatus. @ResponseStatus helps to specify the exact response that we want to occur when the method executes/finishes. HttpStatus.CREATED --> is mapped to 201\
+**@PostMapping** -- requiring the HTTP verb "POST" to be presented with this API call. 
+**@RequestBody** -- Spring MVC taking in all the attributes in the JSON payload and automatically marshaling them into a session object.
+**@RequestMapping**(value = "{id}", method = RequestMethod.DELETE) -- specifies required to pass specific id. the RequestMethod Delete required the HTTP verb "DELETE" presented with this API endpoint.
+**@RequestMapping**(value = "{id}", method = RequestMethod.PUT) -- getting the "id" from URL and using HTTP verb "PUT". There are options PUT/PATCH. PUT will replace all the attributes on the record that you are updating. PATCH will allow just a portion of the attribute to be updated.
 Note:  
 * saveAndFlush -- we can save objects as we are working with it, but it does not get committed to db until flushed. saveAndFlush method helps to save the data and flush into db all together. 
 
@@ -121,17 +121,46 @@ Resolve via Jackson Properties
 
 
 ## Test ##
+Test the APIs using Postman using GET/POST verbs. 
+We used port 4000 and got `Tomcat started on port 4000 (http) with context path` after running the app, so we pass http://localhost:4000/
+
+### Home ###
+Use GET verb in home 'http://localhost:4000/'
+![alt text](HomeOutput.jpg "Home")
+
 
 ### Select ###
+As the mapping url was '/api/v1/sessions' use 'http://localhost:4000/api/v1/sessions' to get all sessions.
+To get specific session by id, http://localhost:4000/api/v1/sessions/<id>
+![alt text](SelectOutput.jpg "Select")
 
 ### Update ###
+Data retrieved before update
+![alt text](BeforeUpdate.jpg "Before")
+
+Use POST verb to update data, pass id to update the specific id. If any of the attributes are not present in the payload it will return 400 Bad request.
+![alt text](UpdateError.jpg "Error")
+
+Otherwise, 200 OK status is returned.
+![alt text](UpdateOutput.jpg "Update")
 
 ### Insert ###
+Use POST verb with http://localhost:4000/api/v1/sessions/ to insert data. Autoincrement session id will be generated.
+![alt text](InsertOutput.jpg "Insert")
 
 Create new Session:
 201 HTTP Status - Created
 A 201 status code indicates that a request was successful and as a result, a resource has been created (for example a new page).
 
 ### Delete ##
+Before deleting
+![alt text](BeforeDelete.jpg "beforeDel")
+
+Deleting session with id 4. Use DELETE verb and pass 4 id. Output 200 ok.
+![alt text](DeleteOutput.jpg "Delete")
+
+After delete try to retrieve the id 4 session, it is not available.
+![alt text](AfterDelete.jpg "afterDel")
+
 
 
