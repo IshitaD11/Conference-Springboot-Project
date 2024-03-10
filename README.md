@@ -141,17 +141,17 @@ Resolve via Jackson Properties
 Test the APIs using Postman using GET/POST verbs. 
 We used port 4000 and got `Tomcat started on port 4000 (http) with context path` after running the app, so we pass http://localhost:4000/
 
-### Home ###
+- ### Home ###
 Use GET verb in home 'http://localhost:4000/'
 ![alt text](HomeOutput.jpg "Home")
 
 
-### Select ###
+- ### Select ###
 As the mapping url was '/api/v1/sessions' use 'http://localhost:4000/api/v1/sessions' to get all sessions.
 To get specific session by id, http://localhost:4000/api/v1/sessions/<id>
 ![alt text](SelectOutput.jpg "Select")
 
-### Update ###
+- ### Update ###
 Data retrieved before update
 ![alt text](BeforeUpdate.jpg "Before")
 
@@ -161,7 +161,7 @@ Use POST verb to update data, pass id to update the specific id. If any of the a
 Otherwise, 200 OK status is returned.
 ![alt text](UpdateOutput.jpg "Update")
 
-### Insert ###
+- ### Insert ###
 Use POST verb with http://localhost:4000/api/v1/sessions/ to insert data. Autoincrement session id will be generated.
 ![alt text](InsertOutput.jpg "Insert")
 
@@ -169,7 +169,7 @@ Create new Session:
 201 HTTP Status - Created
 A 201 status code indicates that a request was successful and as a result, a resource has been created (for example a new page).
 
-### Delete ##
+- ### Delete ##
 Before deleting
 ![alt text](BeforeDelete.jpg "beforeDel")
 
