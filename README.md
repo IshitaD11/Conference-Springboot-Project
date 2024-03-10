@@ -1,7 +1,7 @@
 # Spring-Demo-Conference-Pluralsight
 
-This project is to create a beginner-friendly Conference scheduling app using Spring boot, with all details given as comments.
-This includes spring mvc, spring data JPA, JPA and a relational database as MySQL. 
+This project is to create a beginner-friendly Conference scheduling app using Spring Boot. This includes spring MVC, spring data JPA, JPA, and a relational database such as MySQL. 
+This is a system to maintain many meetings scheduled and speakers for the meetings. It has functionalities like add, retrieve, delete, update operations on Meetings and Speakers.
 
 Data Design of Conference: 
 `There are multiple sessions scheduled in different dates, each having unique session names.
