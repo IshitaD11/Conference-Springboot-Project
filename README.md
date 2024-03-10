@@ -18,22 +18,28 @@ To see BOM go to `pom.xml` --> right click --> select 'maven' --> select 'show e
 
 ### 1. Add the below dependencies in the POM.xml file:
 For data JPA starter:
-`<dependency>
-<groupId>org.springframework.boot</groupId>
-<artifactId>spring-boot-starter-data-jpa</artifactId>
-</dependency>`
+```xml
+    <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency> 
+```
 
 For MySQL:
-`<dependency>
+```xml
+<dependency>
     <groupId>com.mysql</groupId>
     <artifactId>mysql-connector-j</artifactId>
     <scope>runtime</scope>
-</dependency>`
+</dependency>
+```
 
 ### 2. Add db connections in the properties file
-`spring.datasource.url=${DB_URL}
-spring.datasource.username=${DB_USERNAME}
-spring.datasource.password=${DB_PASSWORD}`
+```java
+    spring.datasource.url=${DB_URL}
+    spring.datasource.username=${DB_USERNAME}
+    spring.datasource.password=${DB_PASSWORD}
+```
 
 ### 3. Setup structure as per MVC architecture
 i. Controllers: holds API controllers.\
@@ -51,30 +57,40 @@ declare the table columns as attributes of the class, using the same name as the
 
 Tie the model classes to the JPA relationship to match the DB table relationship. In this case, it is a many-to-many relationship.\
 We need to make one class as the relationship's owner/main definition point. Let's take a session class, and add a list of speakers in it.\
-    `private List<Speaker> speakers;`
+```java
+    private List<Speaker> speakers;
+```
 
 **For setting up ManyToMany relationship**, we can define a Join Table (The db table that holds ManyToMany relationship) \
 @joinColumns define the foreign keys, joinColumn is its own class tables' column, and inverseJoinColumn is the other table's column.\
-    `@ManyToMany
+```java
+    @ManyToMany
     @JoinTable(
         name = "session_speakers",
         joinColumns = @JoinColumn(name = "session_id"),
-        inverseJoinColumns = @JoinColumn(name = "speaker_id"))`
+        inverseJoinColumns = @JoinColumn(name = "speaker_id"))
+```
 
 In the Speaker class map it to the other side of the relationship by the speakers
-    `@ManyToMany(mappedBy = "speakers")
-    private List<Session> sessions;`
+```java
+    @ManyToMany(mappedBy = "speakers")
+    private List<Session> sessions;
+```
 
 **As BLOB datatype** is a binary data, use byte[] array and use the Lob annotations for Binary data.\
 @Lob - large object as binary data can get very long. It helps JPA to deal with the large data.\
 @Column - mapping it with the BLOB column of the table
 
-    `@Lob
+```java
+    @Lob
     @Column(name = "speaker_photo", columnDefinition = "BLOB")
-    private byte[] speaker_photo;`
+    private byte[] speaker_photo;
+```
 
 Add below to properties file, so that JDBC can create a Lob correctly on the java side and BLOB type is correctly mapped to database\
-    `spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect`
+```java
+    spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+```
 
 
 #### repositories:
