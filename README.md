@@ -35,6 +35,8 @@ For MySQL:
 ```
 
 ### 2. Add db connections in the properties file
+Add the DB variables in an external environment variable. In IntelliJ Idea: Go to Run menu --> edit configuration --> more options --> environment variables --> and mention the DB info in the environment variable with the same name passed in the properties file
+
 ```java
     spring.datasource.url=${DB_URL}
     spring.datasource.username=${DB_USERNAME}
